@@ -21,17 +21,27 @@ def generate_users(n):
         mood_id = random.randint(1, 60)
         print(f"INSERT INTO user (userID, name, biography, email, phoneNumber, mood) VALUES ({i}, '{fake.name()}', '{fake.text()}', '{fake.email()}', '{fake.phone_number()}', {mood_id});")
 
-def generate_media_types():
+def generate_media_types(min_rows=30, max_rows=60):
     print("\n-- Generating media types")
+    num_rows = random.randint(min_rows, max_rows)
     media_types = ['Song', 'Book', 'Movie']
     for i, media_type in enumerate(media_types, 1):
         print(f"INSERT INTO mediaType (mediaTypeID, type) VALUES ({i}, '{media_type}');")
+    # Generate additional rows
+    for i in range(len(media_types) + 1, num_rows + 1):
+        random_type = random.choice(media_types)  # Choose randomly from predefined media types
+        print(f"INSERT INTO mediaType (mediaTypeID, type) VALUES ({i}, '{random_type}');")
 
-def generate_genres():
+def generate_genres(min_rows=30, max_rows=60):
     print("\n-- Generating genres")
-    genres = ['Business', 'Self-Help', 'Science Fiction', 'Comedy', 'Drama', 'Pop']
+    num_rows = random.randint(min_rows, max_rows)
+    genres = ['Business', 'Self-Help', 'Science Fiction', 'Comedy', 'Drama', 'Romance']
     for i, genre in enumerate(genres, 1):
         print(f"INSERT INTO genre (genreID, genre) VALUES ({i}, '{genre}');")
+    # Generate additional rows
+    for i in range(len(genres) + 1, num_rows + 1):
+        random_genre = random.choice(genres)  # Choose randomly from predefined genres
+        print(f"INSERT INTO genre (genreID, genre) VALUES ({i}, '{random_genre}');")
 
 def generate_media(n):
     print("\n-- Generating media")
@@ -45,7 +55,7 @@ def generate_media(n):
 
 def generate_books(n):
     print("\n-- Generating books")
-    for i in range(1, n+1):
+    for i in range(1, random.randint(40, 81)):  # Adjust range between 40 and 80
         author = fake.name()
         description = fake.text(max_nb_chars=200)
         pages = random.randint(100, 1000)
@@ -54,7 +64,7 @@ def generate_books(n):
 
 def generate_songs(n):
     print("\n-- Generating songs")
-    for i in range(1, n+1):
+    for i in range(1, random.randint(40, 81)):  # Adjust range between 40 and 80
         artist = fake.name()
         bpm = random.randint(60, 160)
         length = random.randint(180, 300)  # in seconds
@@ -63,7 +73,7 @@ def generate_songs(n):
 
 def generate_movies(n):
     print("\n-- Generating movies")
-    for i in range(1, n+1):
+    for i in range(1, random.randint(40, 81)):  # Adjust range between 40 and 80
         director = fake.name()
         description = fake.text(max_nb_chars=500)
         length = random.randint(80, 180)  # in minutes
@@ -116,6 +126,7 @@ generate_moods(n_strong)
 generate_users(n_users)
 generate_media_types()
 generate_genres()
+
 generate_media(n_weak)
 generate_books(n_weak // 3)  # Distributing the quantities for books, songs, and movies
 generate_songs(n_weak // 3)
@@ -124,6 +135,3 @@ generate_reviews(200)  # Generating 200 reviews as suggested for bridge tables
 generate_logs(200)  # Similarly, generating 200 logs
 generate_journal_entries(40)  # Example for slightly larger data sets in related tables
 generate_user_goals(40)  # Example for goal tracking
-
-# Final note: Redirect these print statements to a SQL file by running this script as:
-# python generate_data.py > sample_data.sql

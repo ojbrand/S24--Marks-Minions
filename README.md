@@ -21,7 +21,7 @@ The Personal Media Journal project, designed & implemented by Mark's Minions, ai
 4. **Jason Bol**: A 39-year-old data analyst who uses the app analytically to engage with media critically & organize his media consumption data.
 
 ## Link to Demo Video
-https://drive.google.com/drive/folders/1lxSIUPhz-vlQtLwj13_Ry-6BB80b3SnE?usp=drive_link
+
 
 ## How to setup and start the containers
 **Important** - you need Docker Desktop installed
@@ -31,7 +31,10 @@ https://drive.google.com/drive/folders/1lxSIUPhz-vlQtLwj13_Ry-6BB80b3SnE?usp=dri
 1. Create a file named `db_password.txt` in the `secrets/` folder and put inside of it the password you want to use for the a non-root user named webapp. 
 1. In a terminal or command prompt, navigate to the folder with the `docker-compose.yml` file.  
 1. Build the images with `docker compose build`
-1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
+1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`.
+
+## Other Important Information 
+doesnotwork.sql is a database we created that was too large load into appsmith in our computers. we tested the app on a smaller dataset called pt2.sql, but chose to include doesnotwork.sql to show the effort we put in to creating the database. 
 
 
 

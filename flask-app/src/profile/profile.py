@@ -108,16 +108,16 @@ def delete_user_goal(goalID):
     db.get_db().commit()
     return jsonify({"success": True, "msg": "User goal deleted"}), 200
 
-@profile.route('/mood/colorScheme/<int:moodID>', methods=['GET'])
-def get_color_scheme_by_mood(moodID):
+@profile.route('/mood/colorScheme/<string:mood>', methods=['GET'])
+def get_color_scheme_by_mood(mood):
     cursor = db.get_db().cursor()
     query = """
     SELECT cs.colorSchemeID, cs.name, cs.headerColor, cs.textColor, cs.backgroundColor
     FROM colorScheme cs
     JOIN mood m ON m.colorScheme = cs.colorSchemeID
-    WHERE m.moodID = %s
+    WHERE m.name = %s
     """
-    cursor.execute(query, (moodID,))
+    cursor.execute(query, (mood,))
     color_scheme = cursor.fetchone()
     if not color_scheme:
         return jsonify([])  # Return an empty list if no color scheme is found

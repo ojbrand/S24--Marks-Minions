@@ -30,10 +30,8 @@ def get_user_mood(userID):
 def update_user_mood(userID):
     data = request.get_json()
     cursor = db.get_db().cursor()
-    columns = [f"{k} = %s" for k in data]
-    values = list(data.values())
-    values.append(userID)
-    cursor.execute(f"UPDATE mood SET {', '.join(columns)} WHERE userID = %s", values)
+    mood = data.get('mood') 
+    cursor.execute("UPDATE user SET mood = %s WHERE userID = %s", (mood, userID))
     db.get_db().commit()
     return jsonify({"success": True, "msg": "User mood updated"}), 200
 

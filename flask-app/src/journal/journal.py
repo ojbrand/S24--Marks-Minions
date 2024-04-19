@@ -4,7 +4,7 @@ from src import db
 # Create a new Blueprint named 'journal'
 journal = Blueprint('journal', __name__)
 
-@journal.route('/userGoal/goal/<int:userID>', methods=['GET'])
+@journal.route('/journalEntries/<int:userID>', methods=['GET'])
 def get_user_journals(userID):
     cursor = db.get_db().cursor()
     cursor.execute("SELECT * FROM journalEntry WHERE user = %s", (userID,))

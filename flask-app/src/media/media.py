@@ -26,8 +26,9 @@ def get_media(mediaID):
     response.status_code = 200
     response.mimetype = 'application/json'
     return response
-media.route('/media', methods=['GET'])
-def get_media_by_mood(moodID):
+
+@media.route('/media', methods=['GET'])
+def get_all_media():
     cursor = db.get_db().cursor()
     query = """
     SELECT m.mediaID, m.title, mt.type AS mediaType, g.genre, m.rating, mo.name AS mood
@@ -36,7 +37,7 @@ def get_media_by_mood(moodID):
     JOIN genre g ON m.genre = g.genreID
     JOIN mood mo ON m.mood = mo.moodID
     """
-    cursor.execute(query, (moodID,))
+    cursor.execute(query)
     results = cursor.fetchall()
     if results:
         row_headers = [x[0] for x in cursor.description]  # Extract row headers
@@ -170,6 +171,17 @@ def create_log():
     cursor.execute(f"INSERT INTO log ({columns}) VALUES ({placeholders})", list(data.values()))
     db.get_db().commit()
     return jsonify({"success": True, "msg": "Log created"}), 201
+
+@media.route('/logs', methods=['GET'])
+def get_all_logs():
+    cursor = db.get_db().cursor()
+    cursor.execute("SELECT * FROM log")
+    logs = cursor.fetchall()
+    if not logs:
+        return jsonify([])
+    headers = [x[0] for x in cursor.description]
+    logs_data = [dict(zip(headers, log)) for log in logs]
+    return jsonify(logs_data)
 
 @media.route('/log/<int:logID>', methods=['PUT'])
 def update_log(logID):

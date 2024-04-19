@@ -21,7 +21,7 @@ The Personal Media Journal project, designed & implemented by Mark's Minions, ai
 4. **Jason Bol**: A 39-year-old data analyst who uses the app analytically to engage with media critically & organize his media consumption data.
 
 ## Link to Demo Video
-https://drive.google.com/drive/folders/1lxSIUPhz-vlQtLwj13_Ry-6BB80b3SnE?usp=drive_link
+
 
 ## How to setup and start the containers
 **Important** - you need Docker Desktop installed

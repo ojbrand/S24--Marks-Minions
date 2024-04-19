@@ -26,16 +26,16 @@ def get_user_mood(userID):
     else:
         abort(404, description="User not found")
 
-@profile.route('/user/<int:userID>', methods=['PUT'])
-def update_user(userID):
+@profile.route('/user/mood/<int:userID>', methods=['PUT'])
+def update_user_mood(userID):
     data = request.get_json()
     cursor = db.get_db().cursor()
     columns = [f"{k} = %s" for k in data]
     values = list(data.values())
     values.append(userID)
-    cursor.execute(f"UPDATE user SET {', '.join(columns)} WHERE userID = %s", values)
+    cursor.execute(f"UPDATE mood SET {', '.join(columns)} WHERE userID = %s", values)
     db.get_db().commit()
-    return jsonify({"success": True, "msg": "User updated"}), 200
+    return jsonify({"success": True, "msg": "User mood updated"}), 200
 
 @profile.route('/user', methods=['POST'])
 def create_user():
@@ -108,16 +108,16 @@ def delete_user_goal(goalID):
     db.get_db().commit()
     return jsonify({"success": True, "msg": "User goal deleted"}), 200
 
-@profile.route('/mood/colorScheme/<string:mood>', methods=['GET'])
-def get_color_scheme_by_mood(mood):
+@profile.route('/mood/colorScheme/<int:moodID>', methods=['GET'])
+def get_color_scheme_by_mood(moodID):
     cursor = db.get_db().cursor()
     query = """
     SELECT cs.colorSchemeID, cs.name, cs.headerColor, cs.textColor, cs.backgroundColor
     FROM colorScheme cs
     JOIN mood m ON m.colorScheme = cs.colorSchemeID
-    WHERE m.name = %s
+    WHERE m.moodID = %s
     """
-    cursor.execute(query, (mood,))
+    cursor.execute(query, (moodID,))
     color_scheme = cursor.fetchone()
     if not color_scheme:
         return jsonify([])  # Return an empty list if no color scheme is found

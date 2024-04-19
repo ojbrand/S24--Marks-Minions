@@ -198,3 +198,14 @@ def get_favorite_logs(userID):
     headers = [x[0] for x in cursor.description]
     logs_data = [dict(zip(headers, log)) for log in logs]
     return jsonify(logs_data)
+
+@media.route('/log/recent/<int:userID>', methods=['GET'])
+def get_recent_favorite_genre(userID):
+    cursor = db.get_db().cursor()
+    cursor.execute("SELECT genre FROM log WHERE userID = %s AND isFavorite = TRUE ORDER BY logID DESC", (userID,))
+    logs = cursor.fetchone()
+    if not logs:
+        return jsonify([])
+    headers = [x[0] for x in cursor.description]
+    log_data = dict(zip(headers, logs))
+    return jsonify(log_data)

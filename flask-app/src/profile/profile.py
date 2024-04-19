@@ -16,6 +16,18 @@ def get_user(userID):
     else:
         abort(404, description="User not found")
 
+@profile.route('/user/<int:userID>/mood', methods=['GET'])
+def get_user_mood(userID):
+    cursor = db.get_db().cursor()
+    cursor.execute("SELECT mood FROM user WHERE userID = %s", (userID,))
+    user = cursor.fetchone()
+    if user:
+        headers = [x[0] for x in cursor.description]
+        user_data = dict(zip(headers, user))
+        return jsonify(user_data)
+    else:
+        abort(404, description="User not found")
+
 @profile.route('/user/<int:userID>', methods=['PUT'])
 def update_user(userID):
     data = request.get_json()

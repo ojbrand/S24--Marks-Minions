@@ -1,4 +1,6 @@
 CREATE DATABASE project;
+grant all privileges on project.* to 'webapp'@'%';
+flush privileges;
 USE project
 
 -- create table statements
@@ -158,7 +160,7 @@ INSERT INTO user (userID, name, biography, email, phoneNumber, mood) VALUES
 (1, 'Jack Dell', 'CEO of a tech startup, passionate about entrepreneurship and productivity.', 'jack.dell@aol.com', '787-555-0101', 1),
 (2, 'Taylor Mack', 'Freelance writer with a keen interest in mindfulness and creative expression.', 'taylor.mack@gmail.com', '211-555-0102', 3),
 (3, 'Ashton Bray', 'University student who loves culture and travel!', 'ashtonbrayyy@gmail.com', '443-187-8854', 6),
-(4, 'Jason Bol', 'I love data!', 'jasonbol@yahoo.com', '301-444-1997', 2);
+(4, 'Jason Bol', 'I love data!', 'jasonbol@yahoo.com', '301-444-1997', 2),
 (5, 'Kelsey Johnson', 'Nature lover hiking through scenic trails.', 'vchapman@example.net', '+1-941-566-5171x005', 4),
 (6, 'Kelsey Dickerson', 'Aspiring artist capturing lifes beauty through art.', 'cconrad@example.com', '(307)581-5487', 5),
 (7, 'Christine Porter', 'Music lover with a diverse taste in genres.', 'yquinn@example.com', '(977)882-6833', 9),

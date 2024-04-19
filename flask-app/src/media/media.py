@@ -26,6 +26,29 @@ def get_media(mediaID):
     response.status_code = 200
     response.mimetype = 'application/json'
     return response
+media.route('/media', methods=['GET'])
+def get_media_by_mood(moodID):
+    cursor = db.get_db().cursor()
+    query = """
+    SELECT m.mediaID, m.title, mt.type AS mediaType, g.genre, m.rating, mo.name AS mood
+    FROM media m
+    JOIN mediaType mt ON m.mediaType = mt.mediaTypeID
+    JOIN genre g ON m.genre = g.genreID
+    JOIN mood mo ON m.mood = mo.moodID
+    """
+    cursor.execute(query, (moodID,))
+    results = cursor.fetchall()
+    if results:
+        row_headers = [x[0] for x in cursor.description]  # Extract row headers
+        json_data = [dict(zip(row_headers, result)) for result in results]
+    else:
+        json_data = []
+
+    response = make_response(jsonify(json_data))
+    response.status_code = 200
+    response.mimetype = 'application/json'
+    return response
+
 
 @media.route('/media/mediaType/<type>', methods=['GET'])
 def get_media_by_type(type):

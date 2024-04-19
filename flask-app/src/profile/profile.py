@@ -19,12 +19,10 @@ def get_user(userID):
 @profile.route('/user/<int:userID>/mood', methods=['GET'])
 def get_user_mood(userID):
     cursor = db.get_db().cursor()
-    cursor.execute("SELECT mood FROM user WHERE userID = %s", (userID,))
+    cursor.execute("SELECT mood.name FROM user JOIN mood ON user.mood = mood.moodID WHERE userID = %s", (userID,))
     user = cursor.fetchone()
     if user:
-        headers = [x[0] for x in cursor.description]
-        user_data = dict(zip(headers, user))
-        return jsonify(user_data)
+        return user[0]
     else:
         abort(404, description="User not found")
 

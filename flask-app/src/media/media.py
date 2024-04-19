@@ -77,8 +77,8 @@ def get_media_by_rating(rating):
     return response
 
 
-@media.route('/media/mood/<int:moodID>', methods=['GET'])
-def get_media_by_mood(moodID):
+@media.route('/media/mood/<string:mood>', methods=['GET'])
+def get_media_by_mood(mood):
     cursor = db.get_db().cursor()
     query = """
     SELECT m.mediaID, m.title, mt.type AS mediaType, g.genre, m.rating, mo.name AS mood
@@ -86,9 +86,9 @@ def get_media_by_mood(moodID):
     JOIN mediaType mt ON m.mediaType = mt.mediaTypeID
     JOIN genre g ON m.genre = g.genreID
     JOIN mood mo ON m.mood = mo.moodID
-    WHERE mo.moodID = %s
+    WHERE mo.name = %s
     """
-    cursor.execute(query, (moodID,))
+    cursor.execute(query, (mood,))
     results = cursor.fetchall()
     if results:
         row_headers = [x[0] for x in cursor.description]  # Extract row headers
@@ -102,18 +102,18 @@ def get_media_by_mood(moodID):
     return response
 
 
-@media.route('/media/genre/<int:genreID>', methods=['GET'])
-def get_media_by_genre(genreID):
+@media.route('/media/genre/<string:genre>', methods=['GET'])
+def get_media_by_genre(genre):
     cursor = db.get_db().cursor()
     query = """
-    SELECT m.mediaID, m.title, mt.type AS mediaType, m.rating, mo.name AS mood
+    SELECT m.title, mt.type AS mediaType, m.rating, mo.name AS mood
     FROM media m
     JOIN mediaType mt ON m.mediaType = mt.mediaTypeID
     JOIN genre g ON m.genre = g.genreID
     JOIN mood mo ON m.mood = mo.moodID
-    WHERE g.genreID = %s
+    WHERE g.genre = %s
     """
-    cursor.execute(query, (genreID,))
+    cursor.execute(query, (genre,))
     results = cursor.fetchall()
     if results:
         row_headers = [x[0] for x in cursor.description]  # Extract row headers
@@ -191,7 +191,7 @@ def get_user_logs_by_rating(userID, rating):
 @media.route('/log/favorite/<int:userID>', methods=['GET'])
 def get_favorite_logs(userID):
     cursor = db.get_db().cursor()
-    cursor.execute("SELECT * FROM log WHERE userID = %s AND isFavorite = TRUE", (userID,))
+    cursor.execute("SELECT * FROM log WHERE userID = %s AND favorite = TRUE", (userID,))
     logs = cursor.fetchall()
     if not logs:
         return jsonify([])  # Return an empty list if no logs found
@@ -202,10 +202,9 @@ def get_favorite_logs(userID):
 @media.route('/log/recent/<int:userID>', methods=['GET'])
 def get_recent_favorite_genre(userID):
     cursor = db.get_db().cursor()
-    cursor.execute("SELECT genre FROM log WHERE userID = %s AND isFavorite = TRUE ORDER BY logID DESC", (userID,))
-    logs = cursor.fetchone()
-    if not logs:
-        return jsonify([])
-    headers = [x[0] for x in cursor.description]
-    log_data = dict(zip(headers, logs))
-    return jsonify(log_data)
+    cursor.execute("SELECT genre.genre FROM log JOIN media ON log.mediaID = media.mediaID JOIN genre on media.genre = genre.genreID WHERE userID = %s AND favorite = TRUE ORDER BY logID DESC", (userID,))
+    log = cursor.fetchone()
+    if not log:
+        return ""
+    genre = log[0]
+    return genre

@@ -42,5 +42,7 @@ def create_app():
     app.register_blueprint(profile,   url_prefix='/p')
     app.register_blueprint(journal,   url_prefix='/j')
 
+    app.config['MYSQL_DATABASE_PASSWORD'] = open('/secrets/db_root_password.txt').readline().strip()
+
     # Don't forget to return the app object
     return app

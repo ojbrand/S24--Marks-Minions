@@ -1,7 +1,7 @@
 CREATE DATABASE project;
 grant all privileges on project.* to 'webapp'@'%';
 flush privileges;
-USE project
+USE project;
 
 -- create table statements
 CREATE TABLE IF NOT EXISTS genre (
@@ -153,7 +153,7 @@ INSERT INTO mood (moodID, name, colorScheme) VALUES
 (9, 'empty', 4),
 (10, 'spontaneous', 5),
 (11, 'excited', 6),
-(12, 'chill', 2),
+(12, 'chill', 2);
 
 
 INSERT INTO user (userID, name, biography, email, phoneNumber, mood) VALUES 

@@ -32,9 +32,6 @@ The Personal Media Journal project, designed & implemented by Mark's Minions, ai
 1. Build the images with `docker compose build`
 1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`.
 
-## Other Important Information 
-doesnotwork.sql is a database we created that was too large load into appsmith in our computers. we tested the app on a smaller dataset called pt2.sql, but chose to include doesnotwork.sql to show the effort we put in to creating the database. 
-
 
 
 
